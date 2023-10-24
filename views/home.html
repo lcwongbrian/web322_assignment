@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="author" content="Lap Chi Wong" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" type="text/css" href="/css/main.css" />
+        <title>Lego Collection</title>
+        <style>
+            .z-50 {
+                z-index: 50;
+            }
+
+            .flex-wrap {
+                flex-wrap: wrap;
+            }
+        </style>
+        <script>
+            const resetDom = () => {
+                const divCarContainer = document.getElementById('lego-set');
+                divCarContainer.innerHTML = '';
+            };
+
+            const loadDom = (sets) => {
+                const divLegoSetContainer = document.getElementById('lego-set');
+                divLegoSetContainer.innerHTML = '';
+                for (const set of sets) {
+                    const divCard = document.createElement('div');
+                    divCard.classList.add('card', 'bg-base-100', 'shadow-xl');
+
+                    const figure = document.createElement('figure');
+                    const imgThumb = document.createElement('img');
+                    imgThumb.setAttribute("src", set.img_url);
+                    figure.appendChild(imgThumb);
+
+                    const divCardBody = document.createElement('div');
+                    divCardBody.classList.add('card-body');
+
+                    const headerName = document.createElement('h2');
+                    const rowYear = document.createElement('p');
+                    const rowSetNum = document.createElement('p');
+                    const rowParts = document.createElement('p');
+                    const rowTheme = document.createElement('p');
+                    
+                    headerName.classList.add('card-title');
+                    headerName.innerHTML = set.name || '';
+                    rowYear.innerHTML = `Year: ${set.year || ''}`;
+                    rowSetNum.innerHTML = `Set No.: ${set.set_num || ''}`;
+                    rowParts.innerHTML = `Inventory: ${set.num_parts || ''} parts`;
+                    rowTheme.innerHTML = `Theme: ${set.theme || ''}`;
+
+                    const divAction = document.createElement('div');
+                    divAction.classList.add('card-actions', 'justify-end');
+
+                    const link = document.createElement('a');
+                    link.classList.add('btn', 'btn-primary');
+                    link.setAttribute("href", `/lego/sets/${set.set_num}`);
+                    link.innerHTML = 'Link';                    
+
+                    divAction.appendChild(link);
+                    divCardBody.appendChild(headerName);
+                    divCardBody.appendChild(rowYear);
+                    divCardBody.appendChild(rowSetNum);
+                    divCardBody.appendChild(rowParts);
+                    divCardBody.appendChild(rowTheme);
+                    divCardBody.appendChild(divAction);
+                    divCard.appendChild(figure);
+                    divCard.appendChild(divCardBody);
+                    divLegoSetContainer.appendChild(divCard);
+                }
+            };
+
+            const onGetBtnClick = () => {
+                fetch('/lego/sets')
+                .then((res) => res.json())
+                .then((json) => {
+                    console.log(json);
+                    loadDom(json);                  
+                })
+                .catch(err => {                    
+                    resetDom();
+                    alert(`Fail to fetch.\nMessage: ${err}`);
+                });
+            };
+        </script>
+    </head>
+    <body>
+        <div class="navbar bg-neutral text-neutral-content rounded-box flex-wrap">
+            <div class="flex-initial">
+                <a class="btn btn-ghost normal-case text-xl btn-active" href="/">Lego Collection</a>
+            </div>
+            <div class="flex-initial">
+                <a class="btn btn-ghost normal-case text-xl" href="/about">About</a>
+            </div>
+            <div class="flex-initial">
+                <ul class="menu menu-horizontal px-1 text-xl">
+                    <li>
+                        <details>
+                            <summary>Theme</summary>
+                            <ul class="p-2 bg-base-300 z-50">
+                                <li>
+                                    <a href="/lego/sets?theme=Batman">Batman</a>
+                                </li>
+                                <li>
+                                    <a href="/lego/sets?theme=Iron Man">Iron Man</a>
+                                </li>
+                                <li>
+                                    <a href="/lego/sets?theme=Spider-Man">Spider-Man</a>
+                                </li>
+                            </ul>
+                        </details>
+                    </li>                    
+                </ul>                
+            </div>
+        </div>
+        <div class="container mx-auto">
+            <div class="hero min-h-fit bg-base-200">
+                <div class="hero-content text-center">
+                    <div class="max-w-md">
+                        <h1 class="text-5xl font-bold">Welcome!</h1>
+                        <p class="py-6">In this Lego world, you can pick your favorite themes of lego set fitting your interests.</p>
+                        <button class="btn btn-primary" onclick="onGetBtnClick()">See Our Collections!</button>
+                    </div>
+                </div>
+            </div>            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3" id="lego-set">
+            </div>
+        </div>
+    </body>
+</html>
