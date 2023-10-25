@@ -16,11 +16,6 @@
             }
         </style>
         <script>
-            const resetDom = () => {
-                const divCarContainer = document.getElementById('lego-set');
-                divCarContainer.innerHTML = '';
-            };
-
             const loadDom = (sets) => {
                 const divLegoSetContainer = document.getElementById('lego-set');
                 divLegoSetContainer.innerHTML = '';
@@ -55,7 +50,7 @@
                     const link = document.createElement('a');
                     link.classList.add('btn', 'btn-primary');
                     link.setAttribute("href", `/lego/sets/${set.set_num}`);
-                    link.innerHTML = 'Link';                    
+                    link.innerHTML = 'Go';                    
 
                     divAction.appendChild(link);
                     divCardBody.appendChild(headerName);
@@ -70,18 +65,24 @@
                 }
             };
 
-            const onGetBtnClick = () => {
-                fetch('/lego/sets')
-                .then((res) => res.json())
-                .then((json) => {
-                    console.log(json);
-                    loadDom(json);                  
-                })
-                .catch(err => {                    
-                    resetDom();
+            window.addEventListener("load", async e => {
+                try {
+                    const setNumList = ['75996-1', '75997-1', '76000-1'];
+                    const sets = [];
+                    for (const setNum of setNumList) {
+                        const res = await fetch(`/lego/sets/${setNum}`);
+                        const set = await res.json();
+                        if (set) {
+                            sets.push(set);
+                        }
+                    }
+                    loadDom(sets);
+                } catch(err) {
+                    const divLegoSetContainer = document.getElementById('lego-set');
+                    divLegoSetContainer.innerHTML = '';
                     alert(`Fail to fetch.\nMessage: ${err}`);
-                });
-            };
+                }
+            });
         </script>
     </head>
     <body>
@@ -119,7 +120,7 @@
                     <div class="max-w-md">
                         <h1 class="text-5xl font-bold">Welcome!</h1>
                         <p class="py-6">In this Lego world, you can pick your favorite themes of lego set fitting your interests.</p>
-                        <button class="btn btn-primary" onclick="onGetBtnClick()">See Our Collections!</button>
+                        <a class="btn btn-primary" href="/lego/sets/">See Our Collections!</a>
                     </div>
                 </div>
             </div>            
