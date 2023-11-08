@@ -1,0 +1,15 @@
+<div class="navbar bg-neutral text-neutral-content rounded-box flex-wrap">
+    <div class="flex-1">
+        <a class="btn btn-ghost normal-case text-xl" href="/">Lego Collection</a>
+    </div>
+    <div class="flex-none">
+        <ul class="menu menu-horizontal px-1">
+            <li>
+                <a class="<%= (page == '/about') ? 'btn-active' : '' %>" href="/about">About</a>
+            </li>
+            <li>
+                <a class="<%= (page == '/lego/sets') ? 'btn-active' : '' %>" href="/lego/sets">View Collection</a>
+            </li>
+        </ul>
+      </div>
+</div>

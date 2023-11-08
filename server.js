@@ -1,12 +1,12 @@
 /********************************************************************************
-* WEB322 – Assignment 03
+* WEB322 – Assignment 04
 *
 * I declare that this assignment is my own work in accordance with Seneca's
 * Academic Integrity Policy:
 *
 * https://www.senecacollege.ca/about/policies/academic-integrity-policy.html
 *
-* Name: Lap Chi Wong    Student ID: 112867221   Date: 24 Oct 2023
+* Name: Lap Chi Wong    Student ID: 112867221   Date: 8 Nov 2023
 *
 * Published URL: https://salmon-iguana-garb.cyclic.app/
 *
@@ -19,7 +19,9 @@ const legoData = require("./modules/legoSets");
 const app = express();
 const HTTP_PORT = process.env.PORT || 80;
 
+app.set('view engine', 'ejs');
 app.use(express.static('public'));
+
 
 const start = async () => {
     await legoData.initialize();
@@ -27,11 +29,11 @@ const start = async () => {
 };
 
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, '/views/home.html'));
+    res.render("home");
 });
 
 app.get("/about", (req, res) => {
-    res.sendFile(path.join(__dirname, '/views/about.html'));
+    res.render("about");
 });
 
 app.get("/lego/sets", async (req, res) => {
@@ -41,24 +43,24 @@ app.get("/lego/sets", async (req, res) => {
             sets = await legoData.getSetsByTheme(req.query.theme);
         } else {
             sets = await legoData.getAllSets();
-        }        
-        res.json(sets);
+        }
+        res.render("sets", {sets});
     } catch(err) {
-        res.status(404).send(err);
+        res.status(404).render("404", { message: "Unable to find requested sets." });
     }
 });
 
 app.get("/lego/sets/:id", async (req, res) => {
     try {
         const set = await legoData.getSetByNum(req.params.id);
-        res.json(set);
+        res.render("set", {set});
     } catch(err) {
-        res.status(404).send(err);
+        res.status(404).render("404", { message: "Unable to find requested set." });
     }
 });
 
 app.use((req, res, next) => {
-    res.status(404).sendFile(path.join(__dirname, '/views/404.html'));
+    res.status(404).render("404", { message: "I'm sorry, we're unable to find what you're looking for" });
 });
 
 start();

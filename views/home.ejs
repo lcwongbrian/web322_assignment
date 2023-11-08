@@ -6,15 +6,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" type="text/css" href="/css/main.css" />
         <title>Lego Collection</title>
-        <style>
-            .z-50 {
-                z-index: 50;
-            }
-
-            .flex-wrap {
-                flex-wrap: wrap;
-            }
-        </style>
         <script>
             const loadDom = (sets) => {
                 const divLegoSetContainer = document.getElementById('lego-set');
@@ -66,56 +57,43 @@
             };
 
             window.addEventListener("load", async e => {
-                try {
-                    const setNumList = ['75996-1', '75997-1', '76000-1'];
-                    const sets = [];
-                    for (const setNum of setNumList) {
-                        const res = await fetch(`/lego/sets/${setNum}`);
-                        const set = await res.json();
-                        if (set) {
-                            sets.push(set);
-                        }
+                const sets = [
+                    {
+                        set_num: "75996-1",
+                        name: "Aquaman & Storm",
+                        year: "2018",
+                        theme_id: "695",
+                        num_parts: "197",
+                        img_url: "https://cdn.rebrickable.com/media/sets/75996-1.jpg",
+                        theme: "Super Heroes DC"
+                    },
+                    {
+                        set_num: "75997-1",
+                        name: "Ant-Man & The Wasp",
+                        year: "2018",
+                        theme_id: "696",
+                        num_parts: "218",
+                        img_url: "https://cdn.rebrickable.com/media/sets/75997-1.jpg",
+                        theme: "Super Heroes Marvel"
+                    },
+                    {
+                        set_num: "76000-1",
+                        name: "Arctic Batman vs. Mr. Freeze: Aquaman on Ice",
+                        year: "2013",
+                        theme_id: "697",
+                        num_parts: "199",
+                        img_url: "https://cdn.rebrickable.com/media/sets/76000-1.jpg",
+                        theme: "Batman"
                     }
-                    loadDom(sets);
-                } catch(err) {
-                    const divLegoSetContainer = document.getElementById('lego-set');
-                    divLegoSetContainer.innerHTML = '';
-                    alert(`Fail to fetch.\nMessage: ${err}`);
-                }
+                ];
+                loadDom(sets);
             });
         </script>
     </head>
     <body>
-        <div class="navbar bg-neutral text-neutral-content rounded-box flex-wrap">
-            <div class="flex-initial">
-                <a class="btn btn-ghost normal-case text-xl btn-active" href="/">Lego Collection</a>
-            </div>
-            <div class="flex-initial">
-                <a class="btn btn-ghost normal-case text-xl" href="/about">About</a>
-            </div>
-            <div class="flex-initial">
-                <ul class="menu menu-horizontal px-1 text-xl">
-                    <li>
-                        <details>
-                            <summary>Theme</summary>
-                            <ul class="p-2 bg-base-300 z-50">
-                                <li>
-                                    <a href="/lego/sets?theme=Batman">Batman</a>
-                                </li>
-                                <li>
-                                    <a href="/lego/sets?theme=Iron Man">Iron Man</a>
-                                </li>
-                                <li>
-                                    <a href="/lego/sets?theme=Spider-Man">Spider-Man</a>
-                                </li>
-                            </ul>
-                        </details>
-                    </li>                    
-                </ul>                
-            </div>
-        </div>
-        <div class="container mx-auto">
-            <div class="hero min-h-fit bg-base-200">
+        <%- include('partials/navbar', {page: ''}) %>
+        <div class="container mx-auto p-4">
+            <div class="hero bg-base-200 rounded p-6">
                 <div class="hero-content text-center">
                     <div class="max-w-md">
                         <h1 class="text-5xl font-bold">Welcome!</h1>
@@ -123,7 +101,8 @@
                         <a class="btn btn-primary" href="/lego/sets/">See Our Collections!</a>
                     </div>
                 </div>
-            </div>            
+            </div>
+            <br>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 bg-base-200" id="lego-set">
             </div>
         </div>

@@ -7,62 +7,29 @@
         <link rel="stylesheet" type="text/css" href="/css/main.css">
         <title>About Me</title>
         <style>
-            .z-50 {
-                z-index: 50;
-            }
-
-            .flex-wrap {
-                flex-wrap: wrap;
-            }
             .thumbnail {
                 margin: auto;
             }
         </style>
     </head>
     <body>
-        <div class="navbar bg-neutral text-neutral-content rounded-box flex-wrap">
-            <div class="flex-initial">
-                <a class="btn btn-ghost normal-case text-xl" href="/">Lego Collection</a>
-            </div>
-            <div class="flex-initial">
-                <a class="btn btn-ghost normal-case text-xl btn-active" href="/about">About</a>
-            </div>
-            <div class="flex-initial">
-                <ul class="menu menu-horizontal px-1 text-xl">
-                    <li>
-                        <details>
-                            <summary>Theme</summary>
-                            <ul class="p-2 bg-base-300 z-50">
-                                <li>
-                                    <a href="/lego/sets?theme=Batman">Batman</a>
-                                </li>
-                                <li>
-                                    <a href="/lego/sets?theme=Iron Man">Iron Man</a>
-                                </li>
-                                <li>
-                                    <a href="/lego/sets?theme=Spider-Man">Spider-Man</a>
-                                </li>
-                            </ul>
-                        </details>
-                    </li>                    
-                </ul>                
-            </div>
-        </div>
-        <div class="container mx-auto">
-            <div class="hero min-h-fit bg-base-200">
+        <%- include('partials/navbar', {page: '/about'}) %>
+        <div class="container mx-auto p-4">
+            <div class="hero bg-base-200 rounded p-6">
                 <div class="hero-content text-center">
                     <div class="max-w-md">
                         <h1 class="text-5xl font-bold">All About Me</h1>
                         <p class="py-6">My Background | My Direction | My Hobbies</p>
                     </div>
                 </div>
-            </div>            
+            </div>
+            <br>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-2">
-                <div class="thumbnail">
-                    <figure>
+                <div class="avatar">
+                    <div class="thumbnail">
                         <img src="https://static.wikia.nocookie.net/gundamonroblox/images/c/c8/2014_NikeTube_Studios_Haro.png">
-                    </figure>
-                </div>                
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-body">
                         <div class="card-title">My Background</div>
