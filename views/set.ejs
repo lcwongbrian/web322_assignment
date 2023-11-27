@@ -50,12 +50,13 @@
                         <div class="card-title">Year</div>
                         <p><%= set.year %></p>
                         <div class="card-title">Theme</div>
-                        <p><%= set.theme %></p>
+                        <p><%= set.Theme.name %></p>
                         <div class="card-title">Number of Parts</div>
                         <p><%= set.num_parts %></p>
                         <br>
                         <div id="quote"></div>
                         <br>
+                        <a class="btn btn-success" href="/lego/editSet/<%= set.set_num %>">Edit</a>
                         <a class="btn btn-primary" href="#" onclick="history.back(); return false;">Return</a>
                     </div>                    
                 </div>

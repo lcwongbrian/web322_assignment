@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="author" content="Lap Chi Wong" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" type="text/css" href="/css/main.css" />
+        <title>Add Set</title>
+        <script>
+            
+        </script>
+    </head>
+    <body>
+        <%- include('partials/navbar', {page: '/lego/addSet'}) %>
+        <div class="container mx-auto p-4">
+            <div class="hero bg-base-200 rounded p-6">
+                <div class="hero-content text-center">
+                    <div class="max-w-md">
+                        <h1 class="text-5xl font-bold">Add Set</h1>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <form class="form-control max-w-screen-sm" method="post" action="/lego/addSet" enctype="application/x-www-form-urlencoded">
+                <label class="label" for="name">Name</label>
+                <input class="input input-bordered w-full" type="text" id="name" name="name" required>
+                <br />
+                <label class="label" for="year">Year</label>            
+                <input class="input input-bordered w-full" type="number" id="year" name="year" required>
+                <br />
+                <label class="label" for="num_parts">Number of Parts</label>
+                <input class="input input-bordered w-full" type="number" id="num_parts" name="num_parts" required>
+                <br />
+                <label class="label" for="img_url">Image</label>
+                <input class="input input-bordered w-full" type="url" id="img_url" name="img_url" required>
+                <br />
+                <label class="label" for="theme_id">Theme ID</label>
+                <select class="select select-bordered w-full" name="theme_id">
+                    <% themes.forEach(theme=>{ %>
+                        <option value="<%= theme.id %>">
+                            <%= theme.name %>
+                        </option>
+                    <% }) %>                      
+                </select>
+                <br />
+                <label class="label" for="set_num">Set Number</label>
+                <input class="input input-bordered w-full" type="text" id="set_num" name="set_num" required>
+                <br />
+                <input class="btn btn-success" type="submit" value="Submit">
+            </form>
+        </div>
+    </body>
+</html>

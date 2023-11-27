@@ -1,42 +1,174 @@
-const setData = require("../data/setData");
-const themeData = require("../data/themeData");
+require("dotenv").config();
+const Sequelize = require("sequelize");
 
-let sets = [];
+const sequelize = new Sequelize("SenecaDB", "lcwongbrian", "vxC2B3QVDkop", {
+    host: "ep-fragrant-dew-09064981-pooler.us-east-2.aws.neon.tech",
+    dialect: "postgres",
+    port: 5432,
+    dialectOptions: {
+        ssl: { rejectUnauthorized: false }
+    },
+});
+
+const Theme = sequelize.define(
+    'Theme',
+    {
+        id: {
+            type: Sequelize.INTEGER,
+            primaryKey: true,
+            autoincrement: true
+        },
+        name: Sequelize.STRING
+    },
+    {
+        createdAt: false,
+        updatedAt: false
+    }
+);
+
+const Set = sequelize.define(
+    'Set',
+    {
+        set_num: {
+            type: Sequelize.STRING,
+            primaryKey: true
+        },
+        name: Sequelize.STRING,
+        year: Sequelize.INTEGER,
+        num_parts: Sequelize.INTEGER,
+        theme_id: Sequelize.INTEGER,
+        img_url: Sequelize.STRING
+    },
+    {
+        createdAt: false,
+        updatedAt: false
+    }
+);
+
+Set.belongsTo(Theme, {foreignKey: 'theme_id'});
 
 const initialize = () => {
-    setData.forEach(set => {
-        const searchedTheme = themeData.find(theme => theme.id === set.theme_id);
-        if (searchedTheme) {
-            set.theme = searchedTheme.name;
-            sets.push(set);
+    return new Promise(async (resolve, reject) => {
+        try {
+            await sequelize.sync();
+            resolve();
+        } catch (err) {
+            console.log(`[initialize] Fail to initialize: ${err}`);
+            reject(err);
         }
-    });
-    return new Promise((resolve, reject) => {
-        if (sets.length > 0) resolve();
-        else reject("Fail to initialize!");
     });
 };
 
 const getAllSets = () => {
-    return new Promise((resolve, reject) => {
-        if (sets && sets.length > 0) resolve(sets);
-        else reject("Invalid sets data!");
+    return new Promise(async (resolve, reject) => {
+        try {
+            const result = await Set.findAll({
+                include: [Theme]
+            });
+            console.log('[getAllSets] Successfully retrieved');
+            resolve(result);
+        } catch(err) {
+            console.log(`[getAllSets] Error: ${err}`);
+            reject(err);
+        }
     });
 };
 
 const getSetByNum = (setNum) => {
-    return new Promise((resolve, reject) => {
-        const res = sets.find(set => set.set_num === setNum);
-        if (res && res != {}) resolve(res);
-        else reject("No set matches the set number!");
+    return new Promise(async (resolve, reject) => {
+        try {
+            const result = await Set.findAll({
+                include: [Theme],
+                where: {
+                    set_num: setNum
+                }
+            });
+            if (!result || (result && !Array.isArray(result)) || (result && Array.isArray(result) && result.length < 1)) throw "Unable to find requested sets";
+            console.log('[getSetByNum] Successfully retrieved');
+            resolve(result[0]);
+        } catch(err) {
+            console.log(`[getSetByNum] Error: ${err}`);
+            reject(err);
+        }
     });
 };
 
 const getSetsByTheme = (theme) => {
-    return new Promise((resolve, reject) => {
-        const res = sets.filter(set => set.theme.toLowerCase().includes(theme.toLowerCase()));
-        if (res && res.length > 0) resolve(res);
-        else reject("No set matches the theme!");
+    return new Promise(async (resolve, reject) => {
+        try {
+            const result = await Set.findAll({
+                include: [Theme],
+                where: {
+                    '$Theme.name$': {
+                        [Sequelize.Op.iLike]: `%${theme}%`
+                    }
+                }
+            });
+              
+            if (!result || (result && !Array.isArray(result)) || (result && Array.isArray(result) && result.length < 1)) throw "Unable to find requested sets";
+            console.log('[getSetsByTheme] Successfully retrieved');
+            resolve(result);
+        } catch(err) {
+            console.log(`[getSetsByTheme] Error: ${err}`);
+            reject(err);
+        }
+    });
+};
+
+const getAllThemes = () => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const result = await Theme.findAll({});
+            console.log('[getAllThemes] Successfully retrieved');
+            resolve(result);
+        } catch(err) {
+            console.log(`[getAllThemes] Error: ${err}`);
+            reject(err);
+        }
+    });
+};
+
+const addSet = (setData) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await Set.create(setData);
+            console.log('[addSet] Successfully inserted');
+            console.log(JSON.stringify(res, null, 2));
+            resolve();
+        } catch(err) {
+            const msg = err.errors[0].message;
+            console.log(`[addSet] Error: ${msg}`);
+            reject(msg);
+        }
+    });
+};
+
+const editSet = (set_num, setData) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const res = await Set.update(setData, { where: { set_num } });
+            console.log('[editSet] Successfully updated');
+            resolve();
+        } catch(err) {
+            console.log(err);
+            const msg = err.errors[0].message;
+            console.log(`[editSet] Error: ${msg}`);
+            reject(msg);
+        }
+    });
+};
+
+const deleteSet = (set_num) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            await Set.destroy({ where: { set_num } });
+            console.log('[deleteSet] Successfully deleted');
+            resolve();
+        } catch(err) {
+            const msg = err.errors[0].message;
+            console.log(`[deleteSet] Error: ${msg}`);
+            reject(msg);
+        }
     });
 };
 
@@ -44,5 +176,9 @@ module.exports = {
     initialize,
     getAllSets,
     getSetByNum,
-    getSetsByTheme
+    getSetsByTheme,
+    getAllThemes,
+    addSet,
+    editSet,
+    deleteSet
 };
