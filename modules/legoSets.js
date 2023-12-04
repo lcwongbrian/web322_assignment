@@ -1,8 +1,8 @@
 require("dotenv").config();
 const Sequelize = require("sequelize");
 
-const sequelize = new Sequelize("SenecaDB", "lcwongbrian", "vxC2B3QVDkop", {
-    host: "ep-fragrant-dew-09064981-pooler.us-east-2.aws.neon.tech",
+const sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USER, process.env.DB_PASSWORD, {
+    host: process.env.DB_HOST,
     dialect: "postgres",
     port: 5432,
     dialectOptions: {
@@ -51,9 +51,10 @@ const initialize = () => {
     return new Promise(async (resolve, reject) => {
         try {
             await sequelize.sync();
+            console.log(`[set => initialize] Successfully access DB`);
             resolve();
         } catch (err) {
-            console.log(`[initialize] Fail to initialize: ${err}`);
+            console.log(`[set => initialize] Fail to initialize: ${err}`);
             reject(err);
         }
     });

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="author" content="Lap Chi Wong" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" type="text/css" href="/css/main.css" />
+        <title>Login</title>
+        <script>
+            
+        </script>
+    </head>
+    <body>
+        <%- include('partials/navbar', {page: '/login'}) %>
+        <div class="container mx-auto p-4">
+            <div class="hero bg-base-200 rounded p-6">
+                <div class="hero-content text-center">
+                    <div class="max-w-md">
+                        <h1 class="text-5xl font-bold">Log in</h1>
+                        <p>Please provide your credential below</p>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <form class="form-control" method="post" action="/login" enctype="application/x-www-form-urlencoded">
+                <label class="label" for="userName">User Name</label>
+                <input class="input input-bordered w-full" type="text" id="userName" name="userName" placeholder="User Name" value="<%= typeof userName == 'undefined' ? '' : userName %>" required>
+                <br />
+                <label class="label" for="password">Password</label>
+                <input class="input input-bordered w-full" type="password" id="password" name="password" placeholder="Password" required>
+                <br />
+                <input class="btn btn-success" type="submit" value="Login">
+            </form>
+            <% if (typeof errorMessage != 'undefined') { %>
+            <div class="alert alert-error">
+                <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                <span><%= typeof errorMessage == 'undefined' ? '' : errorMessage %></span>
+            </div>
+            <% } %>
+        </div>
+    </body>
+</html>

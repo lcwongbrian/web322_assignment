@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="author" content="Lap Chi Wong" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" type="text/css" href="/css/main.css" />
+        <title>Login</title>
+        <script>
+            
+        </script>
+    </head>
+    <body>
+        <%- include('partials/navbar', {page: '/userHistory'}) %>
+        <div class="container mx-auto p-4">
+            <div class="hero bg-base-200 rounded p-6">
+                <div class="hero-content text-center">
+                    <div class="max-w-md">
+                        <h1 class="text-5xl font-bold"><%= session.user.userName %></h1>
+                        <p>User History: <%= session.user.email %></p>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="overflow-x-auto overflow-y-hidden">
+                <table class="table table-zebra">
+                    <thead>
+                        <tr>
+                            <th>Login Date/Time</th>
+                            <th>Client Information</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for (const history of session.user.loginHistory) { %>
+                        <tr>
+                            <td><%= (new Date(history.dateTime)).toString() %></td>
+                            <td><%= history.userAgent %></td>
+                        </tr>
+                        <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

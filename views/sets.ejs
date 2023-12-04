@@ -24,7 +24,8 @@
             </div>            
             <div class="overflow-x-auto overflow-y-hidden">
                 <table class="table table-zebra">
-                    <% for (const set of sets) { %>
+                    <tbody>
+                        <% for (const set of sets) { %>
                         <tr>
                             <td>
                                 <div class="avatar">
@@ -43,7 +44,8 @@
                             </td>
                             <td><a class="btn btn-primary mt-2 btn-xs" href="/lego/sets/<%= set.set_num %>">Details</a></td>
                         </tr>
-                    <% } %>
+                        <% } %>
+                    </tbody>
                 </table>
             </div>
         </div>

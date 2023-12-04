@@ -10,9 +10,38 @@
             <li>
                 <a class="<%= (page == '/lego/sets') ? 'btn-active' : '' %>" href="/lego/sets">View Collection</a>
             </li>
+            <% if(session.user){ %>
             <li>
-                <a class="<%= (page == '/lego/addSet') ? 'btn-active' : '' %>" href="/lego/addSet">Add to Collection</a>
+                <details>
+                    <summary>Account: <%= session.user.userName %></summary>
+                    <ul class="p-2 right-0">
+                        <li>
+                            <a class="<%= (page == '/lego/addSet') ? 'btn-active' : '' %>" href="/lego/addSet">Add to Collection</a>
+                        </li>
+                        <li>
+                            <a class="<%= (page == '/userHistory') ? 'btn-active' : '' %>" href="/userHistory">User History</a>
+                        </li>
+                        <li>
+                            <a href="/logout">Log Out</a>
+                        </li>
+                    </ul>
+                </details>
             </li>
+            <% } else { %> 
+            <li>
+                <details>
+                    <summary>Account</summary>
+                    <ul class="p-2 right-0">
+                        <li>
+                            <a class="<%= (page == '/login') ? 'btn-active' : '' %>" href="/login">Login</a>
+                        </li>
+                        <li>
+                            <a class="<%= (page == '/register') ? 'btn-active' : '' %>" href="/register">Register</a>
+                        </li>
+                    </ul>
+                </details>
+            </li>
+            <% } %> 
         </ul>
       </div>
 </div>
