@@ -1,17 +1,3 @@
-/********************************************************************************
-* WEB322 – Assignment 06
-*
-* I declare that this assignment is my own work in accordance with Seneca's
-* Academic Integrity Policy:
-*
-* https://www.senecacollege.ca/about/policies/academic-integrity-policy.html
-*
-* Name: Lap Chi Wong    Student ID: 112867221   Date: 4 Dec 2023
-*
-* Published URL: https://salmon-iguana-garb.cyclic.app/
-*
-********************************************************************************/
-
 const express = require("express");
 const path = require("path");
 const legoData = require("./modules/legoSets");
